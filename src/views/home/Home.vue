@@ -8,6 +8,10 @@
     <li>首页48</li>
     <li>首页49</li>
     <li>首页50</li>
+    <li>首页49</li>
+    <li>首页50</li>
+    <li>首页49</li>
+    <li>首页50</li>
   </ul>
   <tab-control class="tab-control"
                :title="['流行','新品','精选']"
