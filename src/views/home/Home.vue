@@ -3,20 +3,22 @@
   <nav-bar class="home-nav">
     <template v-slot:center><div>购物街</div></template>
   </nav-bar>
-  <ul>
-    <li>首页47</li>
-    <li>首页48</li>
-    <li>首页49</li>
-    <li>首页50</li>
-    <li>首页49</li>
-    <li>首页50</li>
-    <li>首页49</li>
-    <li>首页50</li>
-  </ul>
-  <tab-control class="tab-control"
-               :title="['流行','新品','精选']"
-               @tabClick="tabClick"></tab-control>
-  <goods-list :goods="goods[currentType].list"></goods-list>
+  <scroll class="content">
+    <ul>
+      <li>首页47</li>
+      <li>首页48</li>
+      <li>首页49</li>
+      <li>首页50</li>
+      <li>首页49</li>
+      <li>首页50</li>
+      <li>首页49</li>
+      <li>首页50</li>
+    </ul>
+    <tab-control class="tab-control"
+                 :title="['流行','新品','精选']"
+                 @tabClick="tabClick"></tab-control>
+    <goods-list :goods="goods[currentType].list"></goods-list>
+  </scroll>
 </div>
 </template>
 
@@ -25,13 +27,15 @@ import NavBar from "@/components/common/nav-bar/NavBar";
 import TabControl from "@/components/context/tabControl/TabControl";
 import {getHomeMultidata,getHomeGoods} from "@/network/home";
 import GoodsList from "@/components/context/goods/GoodsList";
+import Scroll from "@/components/common/scroll/Scroll";
 
 export default {
   name: "Home",
   components:{
     NavBar,
     TabControl,
-    GoodsList
+    GoodsList,
+    Scroll
   },
   created() {
     this.getHomeMultidata()
@@ -54,7 +58,7 @@ export default {
   methods:{
     getHomeMultidata(){
       getHomeMultidata().then(res => {
-        console.log(res);
+        //console.log(res);
         this.banners=res.data.banner.list
         this.recommends=res.data.recommend.list
       })
@@ -84,6 +88,11 @@ export default {
 </script>
 
 <style scoped>
+#home{
+  /*padding-top: 44px;*/
+  height: 100vh; /*视口大小*/
+  position: relative;
+}
 .home-nav{
   background-color: var(--color-tint);
   position: fixed;
@@ -95,4 +104,17 @@ export default {
   position: sticky;
   top: 44px;
 }
+.content{
+  overflow: hidden;
+  position: absolute;
+  top: 44px;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+}
+/*.content{*/
+/*  height: calc(100% - 93px);*/
+/*  margin-top: 44px;*/
+/*  overflow: hidden;*/
+/*}*/
 </style>
