@@ -3,14 +3,19 @@
   <nav-bar class="home-nav">
     <template v-slot:center><div>购物街</div></template>
   </nav-bar>
+  <tab-control ref="tabControl1"
+               :title="['流行','新品','精选']"
+               @tabClick="tabClick"
+               class="tab-control"
+               v-show="isTabFixed"></tab-control>
   <scroll class="content"
           ref="scroll"
           :probe-type="3"
           @scroll="contentScroll"
           :pull-up-load="true"
           @pullingUp="loadMore">
-    <popular-week></popular-week>
-    <tab-control class="tab-control"
+    <popular-week @popularWeekImgLoad="popularWeekImgLoad"></popular-week >
+    <tab-control ref="tabControl2"
                  :title="['流行','新品','精选']"
                  @tabClick="tabClick"></tab-control>
     <goods-list :goods="goods[currentType].list"></goods-list>
@@ -45,6 +50,8 @@ export default {
     this.getHomeGoods('new')
     this.getHomeGoods('sell')
   },
+  mounted() { //组件的属性$el,拿到里面的元素 (等图片全部加载完在拿取offsetTop)
+  },
   data(){
     return{
       banners:[],
@@ -55,7 +62,9 @@ export default {
         'sell':{page:0,list:[]}
       },
       currentType: 'pop',
-      isShowBackTop: false
+      isShowBackTop: false,
+      tabOffsetTop: 0,
+      isTabFixed:  false
     }
   },
   methods:{
@@ -86,19 +95,28 @@ export default {
           this.currentType='sell'
           break
       }
+      this.$refs.tabControl1.currentIndex=index
+      this.$refs.tabControl2.currentIndex=index
     },
     backClick(){
       //给组件加上ref属性 通过this.$refs.name拿到组件对象
       this.$refs.scroll.scrollTo(0,0) //传入x，y的坐标(想要回到的位置) 以及延迟时间
     },
     contentScroll(position){
+      //1、判断backTop是否显示
       this.isShowBackTop=position.y<-1000
+      //2、决定tabBar是否有吸顶效果(position: fixed)
+      this.isTabFixed = position.y<-this.tabOffsetTop
     },
     //上拉加载更多
     loadMore(){
       this.getHomeGoods(this.currentType)
       //调用refresh重新计算可滚动的区域
       this.$refs.scroll.refresh()
+    },
+    popularWeekImgLoad(){
+      //组件的属性$el,拿到里面的元素 (等图片全部加载完在拿取offsetTop)
+      this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
     }
   }
 }
@@ -112,18 +130,12 @@ export default {
 }
 .home-nav{
   background-color: var(--color-tint);
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
 }
 .tab-control{
-  position: sticky;
-  top: 44px;
+  position: relative;
+  z-index: 9;
 }
 .content{
-
-
   overflow: hidden;
   position: absolute;
   top: 44px;

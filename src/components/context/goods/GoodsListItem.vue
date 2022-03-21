@@ -1,5 +1,7 @@
 <template>
 <div class="goods-item">
+<!--  js原生监听图片加载完成 img.onload=function(){} 通过onload 图片加载完成之后调用function-->
+<!--  Vue里面监听图片加载完成@load="方法"-->
   <img :src="goodsItem.show.img" alt="">
   <div class="goods-info">
     <p>{{goodsItem.title}}</p>
