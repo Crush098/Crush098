@@ -14,6 +14,8 @@
           @scroll="contentScroll"
           :pull-up-load="true"
           @pullingUp="loadMore">
+    <home-swiper :banners="banners"></home-swiper>
+    <recommend-view :recommends="recommends"></recommend-view>
     <popular-week @popularWeekImgLoad="popularWeekImgLoad"></popular-week >
     <tab-control ref="tabControl2"
                  :title="['流行','新品','精选']"
@@ -32,6 +34,8 @@ import {getHomeMultidata,getHomeGoods} from "@/network/home";
 import GoodsList from "@/components/context/goods/GoodsList";
 import Scroll from "@/components/common/scroll/Scroll";
 import BackTop from "@/components/context/backTop/BackTop";
+import HomeSwiper from "@/views/home/childComps/HomeSwiper";
+import RecommendView from "@/views/home/childComps/RecommendView";
 import PopularWeek from "@/views/home/childComps/PopularWeek";
 
 export default {
@@ -42,6 +46,8 @@ export default {
     GoodsList,
     Scroll,
     BackTop,
+    HomeSwiper,
+    RecommendView,
     PopularWeek
   },
   created() {
@@ -50,8 +56,15 @@ export default {
     this.getHomeGoods('new')
     this.getHomeGoods('sell')
   },
-  mounted() { //组件的属性$el,拿到里面的元素 (等图片全部加载完在拿取offsetTop)
-  },
+
+  // activated() {
+  //   this.$refs.scroll.refresh()
+  //   this.$refs.scroll.scrollTo(0,this.saveY,10)
+  // },
+  // deactivated() {
+  //   this.saveY = -this.$refs.scroll.scroll.y
+  //   console.log(this.$refs.scroll.scroll.y);
+  // },
   data(){
     return{
       banners:[],
@@ -64,7 +77,9 @@ export default {
       currentType: 'pop',
       isShowBackTop: false,
       tabOffsetTop: 0,
-      isTabFixed:  false
+      isTabFixed:  false,
+      saveY: 0,
+      position: 0
     }
   },
   methods:{
@@ -75,6 +90,7 @@ export default {
         this.recommends=res.data.recommend.list
       })
     },
+    //获取商品 数据
     getHomeGoods(type){
       const page = this.goods[type].page + 1
       getHomeGoods(type,page).then(res => {
@@ -98,6 +114,7 @@ export default {
       this.$refs.tabControl1.currentIndex=index
       this.$refs.tabControl2.currentIndex=index
     },
+    //回到顶部
     backClick(){
       //给组件加上ref属性 通过this.$refs.name拿到组件对象
       this.$refs.scroll.scrollTo(0,0) //传入x，y的坐标(想要回到的位置) 以及延迟时间
@@ -107,6 +124,7 @@ export default {
       this.isShowBackTop=position.y<-1000
       //2、决定tabBar是否有吸顶效果(position: fixed)
       this.isTabFixed = position.y<-this.tabOffsetTop
+      this.position=position
     },
     //上拉加载更多
     loadMore(){
@@ -129,6 +147,7 @@ export default {
   position: relative;
 }
 .home-nav{
+  position: relative;
   background-color: var(--color-tint);
 }
 .tab-control{

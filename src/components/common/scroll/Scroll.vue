@@ -31,13 +31,14 @@ export default {
       observeDOM: true,
       click:true,
       probeType: this.probeType,
-      observeImage: true
+      observeImage: true,
+      keepAlive: true
     })
     //2、监听滚动的位置
     this.scroll.on('scroll',position => {
       this.$emit('scroll',position)
     })
-    //监听上拉事件
+    //3、监听上拉事件
     this.scroll.on('pullingUp', () => { //可滚动的位置是由scrollerHight属性决定
       this.$emit('pullingUp')//拉到页面底部之后将事件发送出去
     })

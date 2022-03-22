@@ -1,5 +1,5 @@
 <template>
-<div class="goods-item">
+<div class="goods-item" @click="itemClick">
 <!--  js原生监听图片加载完成 img.onload=function(){} 通过onload 图片加载完成之后调用function-->
 <!--  Vue里面监听图片加载完成@load="方法"-->
   <img :src="goodsItem.show.img" alt="">
@@ -16,10 +16,15 @@ export default {
   name: "GoodsListItem",
   props:{
     goodsItem:{
-      type:Object,
-      default(){
-        return {}
+    type:Object,
+    default(){
+      return {}
       }
+    }
+  },
+  methods:{
+    itemClick(){
+      this.$router.push('/detail/'+ this.goodsItem.iid)
     }
   }
 }
