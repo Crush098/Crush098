@@ -28,5 +28,7 @@ export default {
 </script>
 
 <style scoped>
-
+.slide img {
+  width: 100%;
+}
 </style>

@@ -11,30 +11,29 @@ const routes = [
   },
   {
     path: '/home',
-    name: 'home',
-    component: Home
+    name: 'Home',
+    component: Home,
   },
   {
     path: '/category',
-    name: 'category',
-    component: Category
+    name: 'Category',
+    component: Category,
   },
   {
     path: '/shopCar',
-    name: 'shopCar',
-    component: ShopCar
+    name: 'ShopCar',
+    component: ShopCar,
   },
   {
     path: '/profile',
-    name: 'profile',
-    component: Profile
+    name: 'Profile',
+    component: Profile,
   },
   {
     path: '/Detail/:iid',//动态路由传参数
-    name: 'detail',
-    component: Detail
+    name: 'Detail',
+    component: Detail,
   }
-
 ]
 
 const router = createRouter({

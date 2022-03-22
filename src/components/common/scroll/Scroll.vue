@@ -32,7 +32,6 @@ export default {
       click:true,
       probeType: this.probeType,
       observeImage: true,
-      keepAlive: true
     })
     //2、监听滚动的位置
     this.scroll.on('scroll',position => {
